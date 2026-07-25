@@ -1,0 +1,103 @@
+// 开发环境使用 SQLite，生产部署切换到 MySQL
+// 切换步骤：
+//   1. 改 provider 为 "mysql"
+//   2. 修改 DATABASE_URL 为 MySQL 连接串
+//   3. npx prisma migrate dev --name init
+
+generator client {
+  provider = "prisma-client"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            Int       @id @default(autoincrement())
+  username      String    @unique
+  passwordHash  String    @map("password_hash")
+  nickname      String
+  email         String
+  createdAt     DateTime  @default(now()) @map("created_at")
+  updatedAt     DateTime  @updatedAt @map("updated_at")
+
+  @@map("users")
+}
+
+model Category {
+  id          Int      @id @default(autoincrement())
+  name        String
+  slug        String   @unique
+  description String?
+  sortOrder   Int      @default(0) @map("sort_order")
+  createdAt   DateTime @default(now()) @map("created_at")
+  posts       Post[]
+
+  @@map("categories")
+}
+
+model Tag {
+  id        Int       @id @default(autoincrement())
+  name      String
+  slug      String    @unique
+  createdAt DateTime  @default(now()) @map("created_at")
+  posts     PostTag[]
+
+  @@map("tags")
+}
+
+model Post {
+  id          Int       @id @default(autoincrement())
+  title       String
+  slug        String    @unique
+  summary     String?
+  content     String
+  categoryId  Int?      @map("category_id")
+  category    Category? @relation(fields: [categoryId], references: [id])
+  status      String    @default("draft")
+  isTop       Boolean   @default(false) @map("is_top")
+  viewCount   Int       @default(0) @map("view_count")
+  publishedAt DateTime? @map("published_at")
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+  tags        PostTag[]
+  comments    Comment[]
+
+  @@map("posts")
+}
+
+model PostTag {
+  postId Int @map("post_id")
+  tagId  Int @map("tag_id")
+  post   Post @relation(fields: [postId], references: [id], onDelete: Cascade)
+  tag    Tag  @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@id([postId, tagId])
+  @@map("post_tags")
+}
+
+model Comment {
+  id           Int      @id @default(autoincrement())
+  postId       Int      @map("post_id")
+  post         Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  parentId     Int?     @map("parent_id")
+  parent       Comment? @relation("CommentReplies", fields: [parentId], references: [id])
+  replies      Comment[] @relation("CommentReplies")
+  authorName   String   @map("author_name")
+  authorEmail  String   @map("author_email")
+  content      String
+  status       String   @default("pending")
+  ip           String?
+  createdAt    DateTime @default(now()) @map("created_at")
+
+  @@map("comments")
+}
+
+model Resume {
+  id        Int      @id @default(autoincrement())
+  content   String
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("resume")
+}
