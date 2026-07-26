@@ -1,5 +1,5 @@
 import { sqliteTable, text, integer, primaryKey } from "drizzle-orm/sqlite-core";
-import { relations } from "drizzle-orm";
+import { relations, sql } from "drizzle-orm";
 
 // 管理员用户
 export const users = sqliteTable("users", {
@@ -8,8 +8,8 @@ export const users = sqliteTable("users", {
   passwordHash: text("password_hash").notNull(),
   nickname: text("nickname").notNull(),
   email: text("email").notNull(),
-  createdAt: text("created_at").notNull().default("CURRENT_TIMESTAMP"),
-  updatedAt: text("updated_at").notNull().default("CURRENT_TIMESTAMP"),
+  createdAt: text("created_at").notNull().default(sql`CURRENT_TIMESTAMP`),
+  updatedAt: text("updated_at").notNull().default(sql`CURRENT_TIMESTAMP`),
 });
 
 // 文章分类
@@ -19,7 +19,7 @@ export const categories = sqliteTable("categories", {
   slug: text("slug").notNull().unique(),
   description: text("description"),
   sortOrder: integer("sort_order").notNull().default(0),
-  createdAt: text("created_at").notNull().default("CURRENT_TIMESTAMP"),
+  createdAt: text("created_at").notNull().default(sql`CURRENT_TIMESTAMP`),
 });
 
 export const categoriesRelations = relations(categories, ({ many }) => ({
@@ -31,7 +31,7 @@ export const tags = sqliteTable("tags", {
   id: integer("id").primaryKey({ autoIncrement: true }),
   name: text("name").notNull(),
   slug: text("slug").notNull().unique(),
-  createdAt: text("created_at").notNull().default("CURRENT_TIMESTAMP"),
+  createdAt: text("created_at").notNull().default(sql`CURRENT_TIMESTAMP`),
 });
 
 export const tagsRelations = relations(tags, ({ many }) => ({
@@ -50,8 +50,8 @@ export const posts = sqliteTable("posts", {
   isTop: integer("is_top", { mode: "boolean" }).notNull().default(false),
   viewCount: integer("view_count").notNull().default(0),
   publishedAt: text("published_at"),
-  createdAt: text("created_at").notNull().default("CURRENT_TIMESTAMP"),
-  updatedAt: text("updated_at").notNull().default("CURRENT_TIMESTAMP"),
+  createdAt: text("created_at").notNull().default(sql`CURRENT_TIMESTAMP`),
+  updatedAt: text("updated_at").notNull().default(sql`CURRENT_TIMESTAMP`),
 });
 
 export const postsRelations = relations(posts, ({ one, many }) => ({
@@ -83,7 +83,7 @@ export const comments = sqliteTable("comments", {
   content: text("content").notNull(),
   status: text("status").notNull().default("pending"), // pending | approved | spam
   ip: text("ip"),
-  createdAt: text("created_at").notNull().default("CURRENT_TIMESTAMP"),
+  createdAt: text("created_at").notNull().default(sql`CURRENT_TIMESTAMP`),
 });
 
 export const commentsRelations = relations(comments, ({ one, many }) => ({
@@ -96,5 +96,5 @@ export const commentsRelations = relations(comments, ({ one, many }) => ({
 export const resume = sqliteTable("resume", {
   id: integer("id").primaryKey({ autoIncrement: true }),
   content: text("content").notNull().default(""),
-  updatedAt: text("updated_at").notNull().default("CURRENT_TIMESTAMP"),
+  updatedAt: text("updated_at").notNull().default(sql`CURRENT_TIMESTAMP`),
 });

@@ -73,6 +73,7 @@ export async function POST(req: NextRequest) {
         content,
         ip,
         status: "pending",
+        createdAt: new Date().toISOString(),
       })
       .run();
 
