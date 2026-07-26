@@ -9,7 +9,7 @@ export async function PUT(
 ) {
   const { id } = await params;
   const { status } = await req.json();
-  db.update(comments).set({ status }).where(eq(comments.id, Number(id))).run();
+  await db.update(comments).set({ status }).where(eq(comments.id, Number(id))).run();
   return NextResponse.json({ success: true });
 }
 
@@ -18,6 +18,6 @@ export async function DELETE(
   { params }: { params: Promise<{ id: string }> }
 ) {
   const { id } = await params;
-  db.delete(comments).where(eq(comments.id, Number(id))).run();
+  await db.delete(comments).where(eq(comments.id, Number(id))).run();
   return NextResponse.json({ success: true });
 }

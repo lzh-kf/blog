@@ -46,6 +46,6 @@ export async function POST(req: NextRequest) {
   if (!name || !slug) {
     return NextResponse.json({ error: "Name and slug required" }, { status: 400 });
   }
-  const result = db.insert(tags).values({ name, slug }).run();
+  const result = await db.insert(tags).values({ name, slug }).run();
   return NextResponse.json({ id: Number(result.lastInsertRowid), name, slug }, { status: 201 });
 }

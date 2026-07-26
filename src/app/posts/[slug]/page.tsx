@@ -14,13 +14,7 @@ interface Props {
   params: Promise<{ slug: string }>;
 }
 
-export async function generateStaticParams() {
-  const allPosts = await db.query.posts.findMany({
-    where: eq(posts.status, "published"),
-    columns: { slug: true },
-  });
-  return allPosts.map((p) => ({ slug: p.slug }));
-}
+export const dynamic = "force-dynamic";
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
@@ -39,7 +33,7 @@ export default async function PostPage({ params }: Props) {
   const { slug } = await params;
 
   // 增加阅读量（原子操作）
-  db.update(posts)
+  await db.update(posts)
     .set({ viewCount: sql`view_count + 1` })
     .where(and(eq(posts.slug, slug), eq(posts.status, "published")))
     .run();

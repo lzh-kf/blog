@@ -46,7 +46,7 @@ export async function POST(req: NextRequest) {
   if (!name || !slug) {
     return NextResponse.json({ error: "Name and slug required" }, { status: 400 });
   }
-  const result = db
+  const result = await db
     .insert(categories)
     .values({ name, slug, description, sortOrder: sortOrder || 0 })
     .run();

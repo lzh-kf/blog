@@ -6,13 +6,10 @@ import { eq, desc, inArray, and } from "drizzle-orm";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 
+export const dynamic = "force-dynamic";
+
 interface Props {
   params: Promise<{ slug: string }>;
-}
-
-export async function generateStaticParams() {
-  const all = await db.query.tags.findMany({ columns: { slug: true } });
-  return all.map((t) => ({ slug: t.slug }));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -33,7 +30,7 @@ export default async function TagPage({ params }: Props) {
   if (!tag) notFound();
 
   // 通过 post_tags 关联查找所有包含该标签的文章 ID
-  const postIdRows = db
+  const postIdRows = await db
     .select({ postId: postTags.postId })
     .from(postTags)
     .where(eq(postTags.tagId, tag.id))

@@ -6,13 +6,10 @@ import { eq, desc, and } from "drizzle-orm";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 
+export const dynamic = "force-dynamic";
+
 interface Props {
   params: Promise<{ slug: string }>;
-}
-
-export async function generateStaticParams() {
-  const all = await db.query.categories.findMany({ columns: { slug: true } });
-  return all.map((c) => ({ slug: c.slug }));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {

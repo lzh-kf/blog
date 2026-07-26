@@ -65,7 +65,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Slug already exists" }, { status: 409 });
     }
 
-    const result = db
+    const result = await db
       .insert(posts)
       .values({
         title,
@@ -83,7 +83,7 @@ export async function POST(req: NextRequest) {
 
     if (tagIds?.length) {
       for (const tagId of tagIds) {
-        db.insert(postTags).values({ postId, tagId }).run();
+        await db.insert(postTags).values({ postId, tagId }).run();
       }
     }
 

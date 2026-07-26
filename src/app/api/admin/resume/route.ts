@@ -17,9 +17,9 @@ export async function PUT(req: NextRequest) {
   // Upsert: 有则更新，无则创建
   const [existing] = await db.select().from(resume).limit(1);
   if (existing) {
-    db.update(resume).set({ content }).where(eq(resume.id, existing.id)).run();
+    await db.update(resume).set({ content }).where(eq(resume.id, existing.id)).run();
   } else {
-    db.insert(resume).values({ content }).run();
+    await db.insert(resume).values({ content }).run();
   }
   const [result] = await db.select().from(resume).limit(1);
   return NextResponse.json(result);

@@ -63,7 +63,7 @@ export async function POST(req: NextRequest) {
 
     const ip = req.headers.get("x-forwarded-for") || req.headers.get("x-real-ip") || "unknown";
 
-    const result = db
+    const result = await db
       .insert(comments)
       .values({
         postId: post.id,

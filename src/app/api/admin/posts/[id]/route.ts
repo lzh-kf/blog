@@ -65,14 +65,14 @@ export async function PUT(
     if (publishedAt) updateData.publishedAt = publishedAt;
 
     if (Object.keys(updateData).length > 0) {
-      db.update(posts).set(updateData).where(eq(posts.id, numId)).run();
+      await db.update(posts).set(updateData).where(eq(posts.id, numId)).run();
     }
 
     // 更新标签（删旧建新）
     if (tagIds !== undefined) {
-      db.delete(postTags).where(eq(postTags.postId, numId)).run();
+      await db.delete(postTags).where(eq(postTags.postId, numId)).run();
       for (const tagId of tagIds) {
-        db.insert(postTags).values({ postId: numId, tagId }).run();
+        await db.insert(postTags).values({ postId: numId, tagId }).run();
       }
     }
 
@@ -91,6 +91,6 @@ export async function DELETE(
   { params }: { params: Promise<{ id: string }> }
 ) {
   const { id } = await params;
-  db.delete(posts).where(eq(posts.id, Number(id))).run();
+  await db.delete(posts).where(eq(posts.id, Number(id))).run();
   return NextResponse.json({ success: true });
 }

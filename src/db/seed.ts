@@ -10,17 +10,17 @@ async function main() {
   console.log("🌱 开始种子数据...");
 
   // 删除旧数据
-  db.delete(schema.postTags).run();
-  db.delete(schema.comments).run();
-  db.delete(schema.posts).run();
-  db.delete(schema.categories).run();
-  db.delete(schema.tags).run();
-  db.delete(schema.users).run();
-  db.delete(schema.resume).run();
+  await db.delete(schema.postTags).run();
+  await db.delete(schema.comments).run();
+  await db.delete(schema.posts).run();
+  await db.delete(schema.categories).run();
+  await db.delete(schema.tags).run();
+  await db.delete(schema.users).run();
+  await db.delete(schema.resume).run();
 
   // 创建管理员
   const passwordHash = await bcrypt.hash("admin123", 10);
-  db.insert(schema.users).values({
+  await db.insert(schema.users).values({
     username: "admin",
     passwordHash,
     nickname: "站长",
@@ -29,29 +29,27 @@ async function main() {
   console.log("✅ 管理员创建完成: admin");
 
   // 创建分类
-  const cat1 = db.insert(schema.categories).values({
+  await db.insert(schema.categories).values({
     name: "技术", slug: "tech", description: "技术相关文章", sortOrder: 1,
   }).run();
-  const cat2 = db.insert(schema.categories).values({
+  await db.insert(schema.categories).values({
     name: "生活", slug: "life", description: "生活随笔", sortOrder: 2,
   }).run();
-  const cat3 = db.insert(schema.categories).values({
+  await db.insert(schema.categories).values({
     name: "随笔", slug: "essay", description: "日常思考", sortOrder: 3,
   }).run();
   console.log("✅ 分类创建完成: 3个");
 
   // 创建标签
-  const tags = [
-    db.insert(schema.tags).values({ name: "React", slug: "react" }).run(),
-    db.insert(schema.tags).values({ name: "Next.js", slug: "nextjs" }).run(),
-    db.insert(schema.tags).values({ name: "TypeScript", slug: "typescript" }).run(),
-    db.insert(schema.tags).values({ name: "Node.js", slug: "nodejs" }).run(),
-    db.insert(schema.tags).values({ name: "SQLite", slug: "sqlite" }).run(),
-  ];
-  console.log("✅ 标签创建完成:", tags.length, "个");
+  await db.insert(schema.tags).values({ name: "React", slug: "react" }).run();
+  await db.insert(schema.tags).values({ name: "Next.js", slug: "nextjs" }).run();
+  await db.insert(schema.tags).values({ name: "TypeScript", slug: "typescript" }).run();
+  await db.insert(schema.tags).values({ name: "Node.js", slug: "nodejs" }).run();
+  await db.insert(schema.tags).values({ name: "SQLite", slug: "sqlite" }).run();
+  console.log("✅ 标签创建完成: 5 个");
 
   // 创建示例文章
-  const post = db.insert(schema.posts).values({
+  await db.insert(schema.posts).values({
     title: "使用 Next.js 和 Drizzle ORM 构建个人博客",
     slug: "build-blog-with-nextjs-drizzle",
     summary: "从零开始，使用 Next.js 全栈框架和 Drizzle ORM 构建一个 SEO 友好的个人博客网站，支持 Markdown 编写和服务器端渲染。",
@@ -92,16 +90,16 @@ Next.js + Drizzle ORM 的组合非常适合个人博客这类内容驱动型网�
     isTop: true,
     publishedAt: new Date().toISOString(),
   }).run();
-  console.log("✅ 示例文章创建完成:", "build-blog-with-nextjs-drizzle");
+  console.log("✅ 示例文章创建完成: build-blog-with-nextjs-drizzle");
 
   // 文章-标签关联
-  db.insert(schema.postTags).values({ postId: 1, tagId: 1 }).run();
-  db.insert(schema.postTags).values({ postId: 1, tagId: 2 }).run();
-  db.insert(schema.postTags).values({ postId: 1, tagId: 3 }).run();
+  await db.insert(schema.postTags).values({ postId: 1, tagId: 1 }).run();
+  await db.insert(schema.postTags).values({ postId: 1, tagId: 2 }).run();
+  await db.insert(schema.postTags).values({ postId: 1, tagId: 3 }).run();
   console.log("✅ 文章标签关联完成");
 
   // 创建简历
-  db.insert(schema.resume).values({
+  await db.insert(schema.resume).values({
     content: `# 个人信息
 
 - **昵称**：站长

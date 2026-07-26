@@ -9,7 +9,7 @@ export async function PUT(
 ) {
   const { id } = await params;
   const body = await req.json();
-  db.update(tags).set(body).where(eq(tags.id, Number(id))).run();
+  await db.update(tags).set(body).where(eq(tags.id, Number(id))).run();
   return NextResponse.json({ success: true });
 }
 
@@ -18,6 +18,6 @@ export async function DELETE(
   { params }: { params: Promise<{ id: string }> }
 ) {
   const { id } = await params;
-  db.delete(tags).where(eq(tags.id, Number(id))).run();
+  await db.delete(tags).where(eq(tags.id, Number(id))).run();
   return NextResponse.json({ success: true });
 }

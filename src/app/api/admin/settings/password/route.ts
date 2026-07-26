@@ -24,7 +24,7 @@ export async function PUT(req: NextRequest) {
     }
 
     const passwordHash = await bcrypt.hash(newPassword, 10);
-    db.update(users).set({ passwordHash }).where(eq(users.id, user.id)).run();
+    await db.update(users).set({ passwordHash }).where(eq(users.id, user.id)).run();
 
     return NextResponse.json({ success: true });
   } catch (error) {
