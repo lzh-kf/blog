@@ -27,7 +27,8 @@ export async function sendCommentNotification({
     return;
   }
 
-  const postUrl = `${process.env.AUTH_URL}/posts/${postSlug}`;
+  const siteUrl = process.env.SITE_URL || process.env.AUTH_URL || "http://localhost:3000";
+  const postUrl = `${siteUrl}/posts/${postSlug}`;
 
   try {
     await transporter.sendMail({
@@ -40,7 +41,7 @@ export async function sendCommentNotification({
         <p><strong>评论者：</strong>${authorName}</p>
         <p><strong>内容：</strong></p>
         <blockquote>${content}</blockquote>
-        <p><a href="${process.env.AUTH_URL}/admin/comments">前往后台审核</a></p>
+        <p><a href="${siteUrl}/admin/comments">前往后台审核</a></p>
       `,
     });
     console.log(`评论通知邮件已发送至 ${notifyEmail}`);
