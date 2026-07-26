@@ -5,16 +5,26 @@ import { MarkdownRenderer } from "@/components/blog/MarkdownRenderer";
 import { PostTOC } from "@/components/blog/PostTOC";
 import { extractHeadings } from "@/lib/toc";
 import { CommentSection } from "@/components/blog/CommentSection";
+import { ViewTracker } from "@/components/blog/ViewTracker";
 import { Badge } from "@/components/ui/badge";
 import { db } from "@/db";
 import { posts } from "@/db/schema";
-import { eq, and, sql } from "drizzle-orm";
+import { eq } from "drizzle-orm";
 
 interface Props {
   params: Promise<{ slug: string }>;
 }
 
-export const dynamic = "force-dynamic";
+// ISR: 1 小时后后台重新生成，构建时预生成所有已发布文章
+export const revalidate = 3600;
+
+export async function generateStaticParams() {
+  const allPosts = await db.query.posts.findMany({
+    where: eq(posts.status, "published"),
+    columns: { slug: true },
+  });
+  return allPosts.map((p) => ({ slug: p.slug }));
+}
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
@@ -31,12 +41,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function PostPage({ params }: Props) {
   const { slug } = await params;
-
-  // 增加阅读量（原子操作）
-  await db.update(posts)
-    .set({ viewCount: sql`view_count + 1` })
-    .where(and(eq(posts.slug, slug), eq(posts.status, "published")))
-    .run();
 
   const post = await db.query.posts.findFirst({
     where: eq(posts.slug, slug),
@@ -63,6 +67,7 @@ export default async function PostPage({ params }: Props) {
   return (
     <>
       <Header backUrl="/" backLabel="首页" />
+      <ViewTracker slug={post.slug} />
 
       {/* TOC 目录 — 大屏时浮动在右侧，不影响文章居中 */}
       {headings.length > 0 && (
