@@ -40,7 +40,7 @@ export async function POST(req: NextRequest) {
       .randomBytes(6)
       .toString("hex")}${ext}`;
 
-    const uploadDir = path.join(process.cwd(), "public", "uploads");
+    const uploadDir = path.join(process.cwd(), "data", "uploads");
     await mkdir(uploadDir, { recursive: true });
 
     const buffer = Buffer.from(await file.arrayBuffer());
