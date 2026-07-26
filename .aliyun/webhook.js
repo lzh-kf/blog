@@ -9,12 +9,26 @@
 const http = require("http");
 const { execSync } = require("child_process");
 const crypto = require("crypto");
+const fs = require("fs");
+const path = require("path");
 
 const PORT = 3456;
 const HOST = "127.0.0.1";
-const SECRET = process.env.WEBHOOK_SECRET || "change-me";
 const PROJECT_DIR = "/var/www/blog";
 const PM2_APP = "blog";
+
+// 从 .env 文件读取密钥（兼容 PM2 不自动加载 .env 的情况）
+function loadEnvSecret() {
+  try {
+    const envPath = path.join(PROJECT_DIR, ".env");
+    const envContent = fs.readFileSync(envPath, "utf-8");
+    const match = envContent.match(/^WEBHOOK_SECRET=(.+)$/m);
+    if (match) return match[1].trim();
+  } catch (_) {}
+  return null;
+}
+const SECRET = process.env.WEBHOOK_SECRET || loadEnvSecret() || "change-me";
+console.log(`密钥加载: ${SECRET ? "✅" : "❌ 未设置"}`);
 
 function deploy() {
   const log = (msg) => console.log(`[${new Date().toISOString()}] ${msg}`);
