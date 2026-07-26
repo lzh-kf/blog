@@ -77,59 +77,70 @@ export function CommentSection({ postSlug }: CommentSectionProps) {
       <form onSubmit={handleSubmit} className="space-y-4 mb-8">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="space-y-2">
-            <Label htmlFor="name" className="text-sm text-[#6B7280]">昵称 *</Label>
+            <Label htmlFor="name" className="text-sm text-muted-foreground">
+              昵称 *
+            </Label>
             <Input
               id="name"
               value={form.name}
               onChange={(e) => setForm({ ...form, name: e.target.value })}
               placeholder="你的昵称"
-              className="border-[#E5E7EB]"
             />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="email" className="text-sm text-[#6B7280]">邮箱 *（不公开）</Label>
+            <Label htmlFor="email" className="text-sm text-muted-foreground">
+              邮箱 *（不公开）
+            </Label>
             <Input
               id="email"
               type="email"
               value={form.email}
               onChange={(e) => setForm({ ...form, email: e.target.value })}
               placeholder="your@email.com"
-              className="border-[#E5E7EB]"
             />
           </div>
         </div>
         <div className="space-y-2">
-          <Label htmlFor="content" className="text-sm text-[#6B7280]">评论内容 *</Label>
+          <Label htmlFor="content" className="text-sm text-muted-foreground">
+            评论内容 *
+          </Label>
           <Textarea
             id="content"
             value={form.content}
             onChange={(e) => setForm({ ...form, content: e.target.value })}
             placeholder="写下你的想法..."
             rows={4}
-            className="border-[#E5E7EB] resize-none"
+            className="resize-none"
           />
         </div>
-        <Button type="submit" disabled={submitting} variant="outline" className="border-[#E5E7EB] text-[#1A1A1A] hover:bg-[#F5F5F5]">
+        <Button type="submit" disabled={submitting} variant="outline">
           {submitting ? "提交中..." : "提交评论"}
         </Button>
       </form>
 
       {/* 评论列表 */}
       {loading ? (
-        <p className="text-sm text-[#6B7280]">加载中...</p>
+        <p className="text-sm text-muted-foreground">加载中...</p>
       ) : comments.length === 0 ? (
-        <p className="text-sm text-[#6B7280]">暂无评论，来说两句吧</p>
+        <p className="text-sm text-muted-foreground">暂无评论，来说两句吧</p>
       ) : (
         <div className="space-y-6">
           {comments.map((comment) => (
-            <div key={comment.id} className="border-b border-[#E5E7EB] last:border-0 pb-4">
+            <div
+              key={comment.id}
+              className="border-b border-border last:border-0 pb-4"
+            >
               <div className="flex items-center gap-2 text-sm">
-                <span className="font-medium text-[#1A1A1A]">{comment.authorName}</span>
-                <span className="text-[#6B7280] text-xs">
+                <span className="font-medium text-foreground">
+                  {comment.authorName}
+                </span>
+                <span className="text-muted-foreground text-xs">
                   {new Date(comment.createdAt).toLocaleDateString("zh-CN")}
                 </span>
               </div>
-              <p className="mt-2 text-sm text-[#1A1A1A] leading-relaxed">{comment.content}</p>
+              <p className="mt-2 text-sm text-foreground leading-relaxed">
+                {comment.content}
+              </p>
             </div>
           ))}
         </div>

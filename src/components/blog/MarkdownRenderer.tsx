@@ -23,13 +23,19 @@ const markdownComponents: Partial<Components> = {
         <img
           src={src}
           alt={alt || ""}
-          className="rounded-lg border border-[#E5E7EB] max-w-full h-auto mx-auto shadow-sm"
+          className="rounded-lg border border-border max-w-full h-auto mx-auto shadow-sm"
           loading="lazy"
           {...props}
         />
-        {alt && !alt.endsWith(".png") && !alt.endsWith(".jpg") && !alt.endsWith(".webp") && !alt.endsWith(".image") && (
-          <span className="block mt-2 text-sm text-[#6B7280]">{alt}</span>
-        )}
+        {alt &&
+          !alt.endsWith(".png") &&
+          !alt.endsWith(".jpg") &&
+          !alt.endsWith(".webp") &&
+          !alt.endsWith(".image") && (
+            <span className="block mt-2 text-sm text-muted-foreground">
+              {alt}
+            </span>
+          )}
       </span>
     );
   },
@@ -47,12 +53,12 @@ const markdownComponents: Partial<Components> = {
     return (
       <div className="relative group my-5">
         {lang && (
-          <span className="absolute top-0 right-4 -translate-y-full rounded-t bg-[#E5E7EB] px-3 py-0.5 text-xs text-[#6B7280] font-mono">
+          <span className="absolute top-0 right-4 -translate-y-full rounded-t bg-muted px-3 py-0.5 text-xs text-muted-foreground font-mono">
             {lang}
           </span>
         )}
         <pre
-          className="bg-[#F5F5F5] rounded-lg p-4 overflow-x-auto text-sm leading-relaxed border border-[#E5E7EB]"
+          className="bg-muted rounded-lg p-4 overflow-x-auto text-sm leading-relaxed border border-border"
           {...props}
         >
           {children}
@@ -61,15 +67,17 @@ const markdownComponents: Partial<Components> = {
     );
   },
 
-  // 外链：新窗口打开
+  // 外链：新窗口打开，使用主题色
   a({ href, children, ...props }) {
-    const isExternal = href && (href.startsWith("http://") || href.startsWith("https://"));
+    const isExternal =
+      href && (href.startsWith("http://") || href.startsWith("https://"));
     return (
       <a
         href={href}
         target={isExternal ? "_blank" : undefined}
         rel={isExternal ? "noopener noreferrer" : undefined}
-        className="text-[#1A1A1A] underline underline-offset-2 decoration-[#D1D5DB] hover:decoration-[#1A1A1A] transition-colors"
+        className="underline underline-offset-2 decoration-border hover:decoration-[var(--theme)] transition-colors"
+        style={{ color: "var(--theme)" } as React.CSSProperties}
         {...props}
       >
         {children}
@@ -81,7 +89,7 @@ const markdownComponents: Partial<Components> = {
   blockquote({ children, ...props }) {
     return (
       <blockquote
-        className="border-l-4 border-[#D1D5DB] pl-4 my-5 text-[#6B7280] italic"
+        className="border-l-4 border-border pl-4 my-5 text-muted-foreground italic"
         {...props}
       >
         {children}
@@ -94,7 +102,7 @@ const markdownComponents: Partial<Components> = {
     return (
       <div className="overflow-x-auto my-5">
         <table
-          className="min-w-full border-collapse border border-[#E5E7EB] text-sm"
+          className="min-w-full border-collapse border border-border text-sm"
           {...props}
         >
           {children}
@@ -106,7 +114,7 @@ const markdownComponents: Partial<Components> = {
   th({ children, ...props }) {
     return (
       <th
-        className="border border-[#E5E7EB] bg-[#F5F5F5] px-4 py-2 text-left font-medium"
+        className="border border-border bg-muted px-4 py-2 text-left font-medium"
         {...props}
       >
         {children}
@@ -116,7 +124,7 @@ const markdownComponents: Partial<Components> = {
 
   td({ children, ...props }) {
     return (
-      <td className="border border-[#E5E7EB] px-4 py-2" {...props}>
+      <td className="border border-border px-4 py-2" {...props}>
         {children}
       </td>
     );
@@ -125,7 +133,7 @@ const markdownComponents: Partial<Components> = {
 
 export function MarkdownRenderer({ content }: MarkdownRendererProps) {
   return (
-    <article className="prose prose-gray max-w-none prose-headings:font-medium prose-headings:text-[#1A1A1A] prose-h2:text-xl prose-h2:mt-10 prose-h2:mb-4 prose-h3:text-lg prose-h3:mt-8 prose-h3:mb-3 prose-h4:text-base prose-h4:mt-6 prose-h4:mb-2 prose-p:text-[#333] prose-p:leading-relaxed prose-strong:text-[#1A1A1A] prose-code:text-sm prose-code:bg-[#F5F5F5] prose-code:px-1 prose-code:py-0.5 prose-code:rounded prose-ul:my-4 prose-ol:my-4 prose-li:text-[#333] prose-li:leading-relaxed">
+    <article className="prose prose-gray dark:prose-invert max-w-none prose-headings:font-medium prose-headings:text-foreground prose-h2:text-xl prose-h2:mt-10 prose-h2:mb-4 prose-h3:text-lg prose-h3:mt-8 prose-h3:mb-3 prose-h4:text-base prose-h4:mt-6 prose-h4:mb-2 prose-p:text-foreground/80 prose-p:leading-relaxed prose-strong:text-foreground prose-code:text-sm prose-code:bg-muted prose-code:px-1 prose-code:py-0.5 prose-code:rounded prose-ul:my-4 prose-ol:my-4 prose-li:text-foreground/80 prose-li:leading-relaxed">
       <ReactMarkdown components={markdownComponents} {...markdownPlugins}>
         {content}
       </ReactMarkdown>

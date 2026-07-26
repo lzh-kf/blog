@@ -60,21 +60,26 @@ export function PostListNav({ posts }: PostListNavProps) {
 
   return (
     <nav className="text-sm leading-relaxed">
-      <h4 className="text-xs font-medium text-[#9CA3AF] uppercase tracking-wider mb-3">
+      <h4 className="text-xs font-medium text-muted-foreground/60 uppercase tracking-wider mb-3">
         文章列表
       </h4>
-      <ul className="space-y-1 border-l border-[#E5E7EB]">
+      <ul className="space-y-1 border-l border-border">
         {posts.map((p) => (
           <li key={p.slug}>
             <a
               href={`/posts/${p.slug}`}
               onClick={(e) => handleClick(e, p.slug)}
               className={cn(
-                "block py-1 pl-3 border-l-2 -ml-px text-[#6B7280] hover:text-[#1A1A1A] transition-colors truncate",
+                "block py-1 pl-3 border-l-2 -ml-px text-muted-foreground hover:text-foreground transition-colors truncate",
                 activeSlug === p.slug
-                  ? "border-[#1A1A1A] text-[#1A1A1A] font-medium"
+                  ? "border-[var(--theme)] text-foreground font-medium"
                   : "border-transparent"
               )}
+              style={
+                activeSlug === p.slug
+                  ? { borderColor: "var(--theme)", color: "var(--theme)" }
+                  : undefined
+              }
             >
               {p.title}
             </a>

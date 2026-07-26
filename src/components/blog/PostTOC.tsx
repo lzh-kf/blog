@@ -59,10 +59,10 @@ export function PostTOC({ headings }: PostTOCProps) {
 
   return (
     <nav className="text-sm leading-relaxed">
-      <h4 className="text-xs font-medium text-[#9CA3AF] uppercase tracking-wider mb-3">
+      <h4 className="text-xs font-medium text-muted-foreground/60 uppercase tracking-wider mb-3">
         目录
       </h4>
-      <ul className="space-y-1 border-l border-[#E5E7EB]">
+      <ul className="space-y-1 border-l border-border">
         {headings.map((h) => (
           <li
             key={h.id}
@@ -72,11 +72,16 @@ export function PostTOC({ headings }: PostTOCProps) {
               href={`#${h.id}`}
               onClick={(e) => handleClick(e, h.id)}
               className={cn(
-                "block py-1 pl-3 border-l-2 -ml-px text-[#6B7280] hover:text-[#1A1A1A] transition-colors",
+                "block py-1 pl-3 border-l-2 -ml-px text-muted-foreground hover:text-foreground transition-colors",
                 activeId === h.id
-                  ? "border-[#1A1A1A] text-[#1A1A1A] font-medium"
+                  ? "text-foreground font-medium"
                   : "border-transparent"
               )}
+              style={
+                activeId === h.id
+                  ? { borderColor: "var(--theme)", color: "var(--theme)" }
+                  : undefined
+              }
             >
               {h.text}
             </a>

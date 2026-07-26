@@ -79,10 +79,10 @@ export default async function PostPage({ params }: Props) {
       <main className="flex-1 max-w-3xl mx-auto w-full px-4 py-12">
         <article>
           <header className="mb-8">
-            <h1 className="text-2xl font-medium text-[#1A1A1A] leading-snug">
+            <h1 className="text-2xl font-medium text-foreground leading-snug">
               {post.title}
             </h1>
-            <div className="mt-3 flex items-center gap-3 text-sm text-[#6B7280] flex-wrap">
+            <div className="mt-3 flex items-center gap-3 text-sm text-muted-foreground flex-wrap">
               {dateStr && <time>{dateStr}</time>}
               {post.category && <span>{post.category.name}</span>}
             </div>

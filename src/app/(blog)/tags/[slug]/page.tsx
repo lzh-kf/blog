@@ -54,7 +54,7 @@ export default async function TagPage({ params }: Props) {
     <>
       <Header />
       <main className="flex-1 max-w-3xl mx-auto w-full px-4 py-12">
-        <h1 className="text-xl font-medium text-[#1A1A1A] mb-8">#{tag.name}</h1>
+        <h1 className="text-xl font-medium text-foreground mb-8">#{tag.name}</h1>
         {allPosts.map((post) => (
           <PostCard
             key={post.id}

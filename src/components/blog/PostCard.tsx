@@ -21,23 +21,23 @@ export function PostCard({ title, slug, summary, category, tags, publishedAt, id
     : null;
 
   return (
-    <article id={id} className="py-8 border-b border-[#E5E7EB] last:border-b-0">
+    <article id={id} className="py-8 border-b border-border last:border-b-0">
       <Link href={`/posts/${slug}`} className="group block">
-        <h2 className="text-lg font-medium text-[#1A1A1A] group-hover:text-[#6B7280] transition-colors leading-snug">
+        <h2 className="text-lg font-medium text-foreground group-hover:text-muted-foreground transition-colors leading-snug">
           {title}
         </h2>
         {summary && (
-          <p className="mt-2 text-sm text-[#6B7280] leading-relaxed line-clamp-2">
+          <p className="mt-2 text-sm text-muted-foreground leading-relaxed line-clamp-2">
             {summary}
           </p>
         )}
       </Link>
-      <div className="mt-3 flex items-center gap-3 text-xs text-[#6B7280] flex-wrap">
+      <div className="mt-3 flex items-center gap-3 text-xs text-muted-foreground flex-wrap">
         {dateStr && <time>{dateStr}</time>}
         {category && (
           <Link
             href={`/categories/${category.slug}`}
-            className="hover:text-[#1A1A1A] transition-colors"
+            className="hover:text-foreground transition-colors"
           >
             {category.name}
           </Link>

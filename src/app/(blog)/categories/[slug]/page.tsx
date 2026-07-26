@@ -42,9 +42,9 @@ export default async function CategoryPage({ params }: Props) {
     <>
       <Header />
       <main className="flex-1 max-w-3xl mx-auto w-full px-4 py-12">
-        <h1 className="text-xl font-medium text-[#1A1A1A] mb-2">{cat.name}</h1>
+        <h1 className="text-xl font-medium text-foreground mb-2">{cat.name}</h1>
         {cat.description && (
-          <p className="text-sm text-[#6B7280] mb-8">{cat.description}</p>
+          <p className="text-sm text-muted-foreground mb-8">{cat.description}</p>
         )}
         {allPosts.map((post) => (
           <PostCard

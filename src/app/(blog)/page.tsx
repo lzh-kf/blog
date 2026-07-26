@@ -32,7 +32,7 @@ export default async function HomePage() {
 
       <main className="flex-1 max-w-3xl mx-auto w-full px-4 py-12">
         {allPosts.length === 0 ? (
-          <p className="text-sm text-[#6B7280] py-12 text-center">暂无文章</p>
+          <p className="text-sm text-muted-foreground py-12 text-center">暂无文章</p>
         ) : (
           <div>
             {allPosts.map((post) => (
