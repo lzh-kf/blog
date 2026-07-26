@@ -6,6 +6,8 @@ import { resume } from "@/db/schema";
 import { Metadata } from "next";
 import type { Components } from "react-markdown";
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: "个人简历",
 };
