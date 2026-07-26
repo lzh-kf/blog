@@ -1,22 +1,22 @@
-import Database from "better-sqlite3";
-import { drizzle } from "drizzle-orm/better-sqlite3";
+import { createClient } from "@libsql/client";
+import { drizzle } from "drizzle-orm/libsql";
 import * as schema from "./schema";
 import bcrypt from "bcryptjs";
 
-const sqlite = new Database("dev.db");
-const db = drizzle(sqlite, { schema });
+const client = createClient({ url: "file:dev.db" });
+const db = drizzle(client, { schema });
 
 async function main() {
   console.log("🌱 开始种子数据...");
 
   // 删除旧数据
-  sqlite.exec("DELETE FROM post_tags");
-  sqlite.exec("DELETE FROM comments");
-  sqlite.exec("DELETE FROM posts");
-  sqlite.exec("DELETE FROM categories");
-  sqlite.exec("DELETE FROM tags");
-  sqlite.exec("DELETE FROM users");
-  sqlite.exec("DELETE FROM resume");
+  db.delete(schema.postTags).run();
+  db.delete(schema.comments).run();
+  db.delete(schema.posts).run();
+  db.delete(schema.categories).run();
+  db.delete(schema.tags).run();
+  db.delete(schema.users).run();
+  db.delete(schema.resume).run();
 
   // 创建管理员
   const passwordHash = await bcrypt.hash("admin123", 10);
