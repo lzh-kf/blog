@@ -329,7 +329,7 @@ pnpm tsx src/db/seed.ts
 pnpm dev
 # → http://localhost:3000
 # → 管理后台: http://localhost:3000/admin/login
-#    默认账号: admin / admin123
+#    默认账号: admin / <你的密码>
 ```
 
 ---

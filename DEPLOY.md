@@ -105,7 +105,7 @@ pm2 startup systemd   # 设置开机自启（运行后会输出一行命令，�
 ```bash
 mkdir -p /var/www
 cd /var/www
-git clone https://github.com/lzh-kf/blog.git
+git clone <你的Git仓库地址>
 cd blog
 ```
 
@@ -272,7 +272,7 @@ cat /etc/nginx/sites-available/blog | grep ssl
 - [ ] `http://你的IP` → 能看到博客首页
 - [ ] `https://你的域名` → 能访问且有 🔒 图标
 - [ ] `/admin/login` → 管理后台登录页正常
-- [ ] 用 `admin / admin123` 登录管理后台
+- [ ] 用 `admin / <你的密码>` 登录管理后台
 - [ ] **立即修改管理员密码**（后台 → 系统设置）
 - [ ] 评论功能正常（可选：配置 SMTP 后测试邮件通知）
 
